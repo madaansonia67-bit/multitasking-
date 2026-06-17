@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimuBank Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="sim-disclaimer">⚠️ VIRTUAL SIMULATION ONLY. NO REAL VALUE, MONEY OR REWARDS INVOLVED.</div>
+    
+    {% if current_user.is_authenticated %}
+    <div class="sidebar">
+        <h3>SimuBank</h3>
+        <hr style="margin:10px 0; opacity:0.2;">
+        <a href="{{ url_for('main.dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('main.market') }}">Investments</a>
+        <a href="{{ url_for('main.currency_page') }}">Currencies</a>
+        <a href="{{ url_for('main.lottery') }}">Scratch Lottery</a>
+        <a href="{{ url_for('main.forum') }}">Community Forum</a>
+        <a href="{{ url_for('main.chat') }}">Real-Time Chat</a>
+        <a href="{{ url_for('main.view_profile', username=current_user.username) }}">Profile</a>
+        {% if current_user.is_admin %}
+        <a href="{{ url_for('main.admin_panel') }}" style="color:red;">Admin Panel</a>
+        {% endif %}
+        <a href="{{ url_for('main.logout') }}" style="margin-top:auto;">Logout</a>
+    </div>
+
+    <div class="bottom-nav">
+        <a href="{{ url_for('main.dashboard') }}">🏠</a>
+        <a href="{{ url_for('main.market') }}">📈</a>
+        <a href="{{ url_for('main.lottery') }}">🎟️</a>
+        <a href="{{ url_for('main.forum') }}">💬</a>
+        <a href="{{ url_for('main.view_profile', username=current_user.username) }}">👤</a>
+    </div>
+    {% endif %}
+
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="card" style="background:var(--danger); color:white;">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
