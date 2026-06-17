@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Interactive Instantiated Scratch Cards Matrix</h2>
+    <p style="color:var(--text-secondary); margin-bottom:20px;">Purchase matrices setup. Values dynamically reconcile upon fully revealing all 16 sub-elements nodes cells elements.</p>
+    
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
+        <button onclick="purchaseCard(5)" style="width:auto; flex:1;">Buy Card (₹5)</button>
+        <button onclick="purchaseCard(10)" style="width:auto; flex:1;">Buy Card (₹10)</button>
+        <button onclick="purchaseCard(20)" style="width:auto; flex:1;">Buy Card (₹20)</button>
+        <button onclick="purchaseCard(50)" style="width:auto; flex:1;">Buy Card (₹50)</button>
+    </div>
+
+    <div id="scratch-card-area"></div>
+</div>
+
+<div class="card">
+    <h3>Lottery Performance History Logs</h3>
+    <ul>
+        {% for log in history %}
+        <li>Spent ₹{{ log.card_cost }} -> Returned Outcome Change: ₹{{ log.total_won }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
