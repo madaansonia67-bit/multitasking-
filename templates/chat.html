@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Global Live Stream Chat Channels</h2>
+    <div id="chat-window" style="height:300px; overflow-y:scroll; background:rgba(0,0,0,0.3); padding:15px; border-radius:8px; margin-bottom:15px;"></div>
+    
+    <div style="display:flex; gap:10px;">
+        <input type="text" id="chat-input-msg" placeholder="Type a message structural stream..." style="margin:0;">
+        <button id="send-chat-btn" style="width:auto; margin:0;">Transmit</button>
+    </div>
+</div>
+
+<script src="https://cdn.socketio.org/4.5.4/socketio.min.js"></script>
+<script>
+    const chatSock = io();
+    const win = document.getElementById('chat-window');
+    const inp = document.getElementById('chat-input-msg');
+    const btn = document.getElementById('send-chat-btn');
+    
+    chatSock.emit('join_global', {});
+
+    btn.addEventListener('click', function() {
+        const text = inp.value.trim();
+        if(text) {
+            chatSock.emit('send_global_msg', { user_id: {{ current_user.id }}, content: text });
+            inp.value = '';
+        }
+    });
+
+    chatSock.on('receive_global_msg', function(data) {
+        const p = document.createElement('p');
+        p.innerHTML = `<small style="color:var(--accent);">[${data.timestamp}]</small> <strong>${data.username}:</strong> ${data.content}`;
+        win.appendChild(p);
+        win.scrollTop = win.scrollHeight;
+    });
+</script>
+{% endblock %}
