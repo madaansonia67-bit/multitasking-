@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>System Level Authority Oversight Node Terminal</h2>
+<div class="card">
+    <h3>User Profile Instances Master Directory</h3>
+    <table style="width:100%; text-align:left;">
+        <tr><th>Username</th><th>Account State</th><th>Actions Configuration</th></tr>
+        {% for u in users %}
+        <tr>
+            <td>{{ u.username }}</td>
+            <td>{% if u.is_banned %}<span style="color:red;">Banned</span>{% else %}Active Core{% endif %}</td>
+            <td>
+                {% if not u.is_banned %}
+                <form action="{{ url_for('main.admin_ban', user_id=u.id) }}" method="POST" style="margin:0;">
+                    <button type="submit" style="background:var(--danger); padding:4px 8px; font-size:0.8rem; width:auto; margin:0;">Ban Account</button>
+                </form>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<div class="card">
+    <h3>Platform Operations Execution Log</h3>
+    <ul>
+        {% for log in logs %}
+        <li>[{{ log.timestamp.strftime('%H:%M:%S') }}] - {{ log.action }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
