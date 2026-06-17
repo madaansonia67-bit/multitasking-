@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card" style="padding:0; overflow:hidden;">
+    <div style="height:150px; background: url('{{ url_for(\'uploaded_file\', filename=target_user.profile.banner) }}') center/cover; background-color:#333;"></div>
+    <div style="padding:20px; position:relative;">
+        <img src="{{ url_for('uploaded_file', filename=target_user.profile.avatar) }}" style="width:80px; height:80px; border-radius:50%; border:4px solid var(--bg-card); position:absolute; top:-40px; left:20px; background:#aaa;">
+        <div style="margin-left:100px;">
+            <h2>{{ target_user.username }}</h2>
+            <p style="color:var(--text-secondary);">Reputation Level Score Matrix: {{ target_user.profile.reputation }}</p>
+        </div>
+    </div>
+</div>
+
+{% if target_user.id == current_user.id %}
+<div class="card">
+    <h3>Configure Asset Profile Identity Graphics</h3>
+    <form action="{{ url_for('main.edit_profile') }}" method="POST" enctype="multipart/form-data">
+        <label>Avatar Photo Square</label>
+        <input type="file" name="avatar" accept="image/*">
+        <label>Profile Header Banner Wall</label>
+        <input type="file" name="banner" accept="image/*">
+        <button type="submit">Update Graphic Assets</button>
+    </form>
+</div>
+{% else %}
+<div class="card">
+    {% if is_following %}
+    <form action="{{ url_for('main.unfollow_user', user_id=target_user.id) }}" method="POST">
+        <button type="submit" style="background:var(--danger);">Drop Following Connection</button>
+    </form>
+    {% else %}
+    <form action="{{ url_for('main.follow_user', user_id=target_user.id) }}" method="POST">
+        <button type="submit">Follow User Account Instance</button>
+    </form>
+    {% endif %}
+</div>
+{% endif %}
+
+<div class="card">
+    <h3>Unlocked Achievements Node Grid ({{ achievements|length }})</h3>
+    <ul>
+        {% for ach in achievements %}
+        <li><strong>{{ ach.title }}</strong>: {{ ach.description }} <small>({{ ach.unlocked_at.strftime('%Y-%m-%d') }})</small></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
