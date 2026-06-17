@@ -484,4 +484,16 @@ def follow_user(user_id):
         db.session.commit()
     return redirect(request.referrer)
 
-@main_bp.route('/unfollow/<int:user_id>', methods=
+@main_bp.route('/unfollow/<int:user_id>', methods=['POST'])
+@login_required
+def unfollow_user(user_id):
+    follow = Follow.query.filter_by(
+        follower_id=current_user.id,
+        followed_id=user_id
+    ).first()
+
+    if follow:
+        db.session.delete(follow)
+        db.session.commit()
+
+    return redirect(request.referrer)
