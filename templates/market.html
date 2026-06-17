@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Fictional Investment Engine Market</h2>
+<p style="color:var(--text-secondary); margin-bottom:15px;">Prices update continuously via sockets sequence architecture loop every 0.5s.</p>
+
+<div class="grid-2">
+    <div class="card">
+        <h3>Market Terminal</h3>
+        <div id="market-display-box">
+            {% for asset in assets %}
+            <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+                <span><strong>{{ asset.name }} ({{ asset.code }})</strong></span>
+                <span id="price-{{ asset.code }}">₹{{ asset.current_price }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Order Routing Interface</h3>
+        <form action="{{ url_for('main.trade_asset') }}" method="POST">
+            <select name="asset_id">
+                {% for asset in assets %}
+                <option value="{{ asset.id }}">{{ asset.name }}</option>
+                {% endfor %}
+            </select>
+            <select name="action">
+                <option value="BUY">BUY ORDER</option>
+                <option value="SELL">SELL ORDER</option>
+            </select>
+            <input type="number" step="any" name="quantity" placeholder="Units Quantity" required>
+            <button type="submit">Transact Order</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.socketio.org/4.5.4/socketio.min.js"></script>
+<script>
+    const socket = io();
+    socket.on('market_update', function(data) {
+        data.assets.forEach(asset => {
+            const el = document.getElementById(`price-${asset.code}`);
+            if(el) el.innerText = `₹${asset.price}`;
+        });
+    });
+</script>
+{% endblock %}
