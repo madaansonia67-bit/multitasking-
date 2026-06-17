@@ -13,7 +13,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///simulation_platform.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
-socketio = SocketIO(app, cors_allowed_origins="*")
+socketio = SocketIO(
+    app,
+    cors_allowed_origins="*",
+    async_mode="threading"
+)
 
 login_manager = LoginManager()
 login_manager.login_view = 'main.index'
