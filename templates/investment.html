@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Multi-Currency Exchange Simulation Hub</h2>
+    <p style="color:var(--text-secondary); margin-bottom:15px;">Convert between dynamic simulation reserves values instantly.</p>
+    
+    <table style="width:100%; text-align:left; margin-bottom:20px;">
+        <tr><th>Currency</th><th>Rate (INR Ratio)</th></tr>
+        {% for rate in rates %}
+        <tr><td>{{ rate.code }}</td><td>₹{{ "%.2f"|format(rate.rate_to_inr) }}</td></tr>
+        {% endfor %}
+    </table>
+
+    <form action="{{ url_for('main.currency_convert') }}" method="POST">
+        <div class="grid-2">
+            <select name="from_currency">
+                <option value="INR">INR</option>
+                {% for rate in rates %}<option value="{{ rate.code }}">{{ rate.code }}</option>{% endfor %}
+            </select>
+            <select name="to_currency">
+                {% for rate in rates %}<option value="{{ rate.code }}">{{ rate.code }}</option>{% endfor %}
+                <option value="INR">INR</option>
+            </select>
+        </div>
+        <input type="number" step="any" name="amount" placeholder="Source Value Amount" required>
+        <button type="submit">Confirm Exchange Conversion Execution</button>
+    </form>
+</div>
+{% endblock %}
