@@ -1,0 +1,204 @@
+:root {
+    --bg-main: #0b0f19;
+    --bg-card: #151d30;
+    --text-primary: #ffffff;
+    --text-secondary: #8a99ad;
+    --accent: #00ffcc;
+    --danger: #ff3366;
+    --success: #00ff66;
+}
+
+[data-theme="light"] {
+    --bg-main: #f4f6f9;
+    --bg-card: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --accent: #2563eb;
+    --danger: #dc2626;
+    --success: #16a34a;
+}
+
+[data-theme="cyberpunk"] {
+    --bg-main: #500050;
+    --bg-card: #1a001a;
+    --text-primary: #00ffff;
+    --text-secondary: #ffff00;
+    --accent: #ff00ff;
+    --danger: #ff0000;
+    --success: #00ff00;
+}
+
+[data-theme="dark-neon"] {
+    --bg-main: #000000;
+    --bg-card: #111111;
+    --text-primary: #39ff14;
+    --text-secondary: #bcbcbc;
+    --accent: #00ffff;
+    --danger: #ff073a;
+    --success: #39ff14;
+}
+
+[data-theme="light-neon"] {
+    --bg-main: #ffffff;
+    --bg-card: #f0f0f0;
+    --text-primary: #ff007f;
+    --text-secondary: #4d4d4d;
+    --accent: #7b00ff;
+    --danger: #ff2a2a;
+    --success: #00e575;
+}
+
+[data-theme="dark-premium"] {
+    --bg-main: #121212;
+    --bg-card: #1c1c1e;
+    --text-primary: #d4af37;
+    --text-secondary: #a1a1a6;
+    --accent: #d4af37;
+    --danger: #ff453a;
+    --success: #30d158;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+body {
+    background: var(--bg-main);
+    color: var(--text-primary);
+    padding-bottom: 70px;
+}
+
+.sim-disclaimer {
+    background: var(--danger);
+    color: white;
+    text-align: center;
+    padding: 6px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+header {
+    background: var(--bg-card);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.container {
+    padding: 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--bg-card);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}
+
+@media(min-width: 768px) {
+    .grid-2 { grid-template-columns: 1fr 1fr; }
+    body { padding-left: 240px; padding-bottom: 0; }
+    .bottom-nav { display: none !important; }
+    .sidebar { display: flex !important; }
+}
+
+.sidebar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100vh;
+    background: var(--bg-card);
+    flex-direction: column;
+    padding: 20px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar a, .bottom-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 12px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+.sidebar a:hover, .bottom-nav a:hover {
+    color: var(--accent);
+    background: rgba(255,255,255,0.05);
+}
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--bg-card);
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    z-index: 999;
+}
+
+input, select, button {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(0,0,0,0.2);
+    color: var(--text-primary);
+}
+
+button {
+    background: var(--accent);
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover { filter: brightness(1.2); }
+
+.scratch-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.scratch-cell {
+    background: #444;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 6px;
+    user-select: none;
+}
+
+.scratched {
+    background: rgba(255,255,255,0.1) !important;
+}
+
+.positive { color: var(--success); }
+.negative { color: var(--danger); }
