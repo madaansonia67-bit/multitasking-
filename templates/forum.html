@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card">
+    <h2>Community Forum Sandbox</h2>
+    <form action="{{ url_for('main.forum') }}" method="POST" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Topic Heading Title" required>
+        <select name="category">
+            <option value="General">General Talk</option>
+            <option value="Strategies">Investment Analysis Strategies</option>
+            <option value="Memes">Simulation Memes Shifting</option>
+        </select>
+        <textarea name="content" style="width:100%; height:100px; background:rgba(0,0,0,0.2); color:white; padding:10px; border-radius:8px;" placeholder="Write your post details here..." required></textarea>
+        <input type="file" name="media" accept="image/*,video/*">
+        <button type="submit">Publish Article Node</button>
+    </form>
+</div>
+
+{% endfor %}
+{% for post in posts %}
+<div class="card">
+    <h3>{{ post.title }} <span style="font-size:0.8rem; color:var(--accent);">[{{ post.category }}]</span></h3>
+    <small style="color:var(--text-secondary);">By {{ post.user.username }} on {{ post.timestamp.strftime('%Y-%m-%d') }}</small>
+    <p style="margin:15px 0; white-space:pre-wrap;">{{ post.content }}</p>
+    
+    {% if post.media_url %}
+        {% if post.media_type == 'image' %}
+            <img src="{{ url_for('uploaded_file', filename=post.media_url) }}" style="max-width:100%; border-radius:8px; margin-bottom:15px;">
+        {% elif post.media_type == 'video' %}
+            <video src="{{ url_for('uploaded_file', filename=post.media_url) }}" controls style="max-width:100%; border-radius:8px; margin-bottom:15px;"></video>
+        {% endif %}
+    {% endif %}
+
+    <hr style="opacity:0.1; margin-bottom:10px;">
+    <form action="{{ url_for('main.add_comment', post_id=post.id) }}" method="POST" style="display:flex; gap:10px;">
+        <input type="text" name="content" placeholder="Write a reply execution block..." required style="margin:0;">
+        <button type="submit" style="width:auto; margin:0;">Reply</button>
+    </form>
+    
+    <div style="margin-top:10px; padding-left:20px; border-left:2px solid var(--accent);">
+        {% for comment in post.comments %}
+        <p style="font-size:0.9rem; margin-bottom:5px;"><strong>{{ comment.user.username }}:</strong> {{ comment.content }}</p>
+        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
