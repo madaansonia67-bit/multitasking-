@@ -2,7 +2,7 @@ import os
 import json
 import random
 import datetime
-from flask import Blueprint, render_init_template, render_template, request, redirect, url_for, flash, jsonify
+from flask import Blueprint, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
 from models import (db, User, Profile, Wallet, Transaction, Asset, Holding, 
