@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="card">
+    <div>
+        <h1>Welcome, {{ current_user.username }}</h1>
+        <p>Level {{ current_user.profile.level }} Simulator Elite (XP: {{ current_user.profile.xp }})</p>
+    </div>
+    <div>
+        <select id="theme-selector" style="width:auto;">
+            <option value="dark">Dark Theme</option>
+            <option value="light">Light Theme</option>
+            <option value="cyberpunk">Cyberpunk</option>
+            <option value="dark-neon">Dark Neon</option>
+            <option value="light-neon">Light Neon</option>
+            <option value="dark-premium">Dark Premium</option>
+        </select>
+    </div>
+</header>
+
+<div class="grid-2">
+    <div class="card">
+        <h3>Simulated Holdings Account</h3>
+        <h1 style="color:var(--accent); font-size:2.5rem; margin:10px 0;">₹{{ "%.2f"|format(current_user.wallet.balance_inr) }}</h1>
+        <button id="claim-reward-btn">Claim Daily Reward (₹1 - ₹15)</button>
+    </div>
+
+    <div class="card">
+        <h3>Transfer Asset / Value System</h3>
+        <form action="{{ url_for('main.transfer') }}" method="POST">
+            <input type="text" name="username" placeholder="Recipient Username" required>
+            <select name="type">
+                <option value="money">Fictional Cash (INR)</option>
+                <option value="scratch_card">Unscratched Card</option>
+            </select>
+            <input type="number" step="any" name="amount" placeholder="Amount (if financial value)">
+            <button type="submit">Verify & Execute</button>
+        </form>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Recent Dynamic Ledger Stream</h3>
+    <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+        {% for tx in txs %}
+        <tr style="border-bottom:1px solid rgba(255,255,255,0.05); height:40px;">
+            <td>{{ tx.tx_type.upper() }}</td>
+            <td class="{% if tx.sender_id == current_user.id %}negative{% else %}positive{% endif %}">
+                {% if tx.sender_id == current_user.id %}-{% else %}+{% endif %}₹{{ tx.amount }}
+            </td>
+            <td style="color:var(--text-secondary); text-align:right;">{{ tx.timestamp.strftime('%H:%M') }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}
